@@ -1,11 +1,11 @@
-import CabinCard from "@/app/_components/CabinCard";
+import CabinList from "@/app/_components/CabinList";
+import { Suspense } from "react";
+import Spinner from "@/app/_components/Spinner";
 
 export const metadata = {
     title: "Cabins",
 };
 export default function Page() {
-    // CHANGE
-    const cabins = [];
 
     return (
         <div>
@@ -20,14 +20,10 @@ export default function Page() {
                 away from home. The perfect spot for a peaceful, calm vacation. Welcome
                 to paradise.
             </p>
+     <Suspense fallback={<Spinner/>}>
+         <CabinList/>
+     </Suspense>
 
-            {cabins.length > 0 && (
-                <div className="grid sm:grid-cols-1 md:grid-cols-2 gap-8 lg:gap-12 xl:gap-14">
-                    {cabins.map((cabin) => (
-                        <CabinCard cabin={cabin} key={cabin.id} />
-                    ))}
-                </div>
-            )}
         </div>
     );
 }
