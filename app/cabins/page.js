@@ -2,11 +2,13 @@ import CabinList from "@/app/_components/CabinList";
 import { Suspense } from "react";
 import Spinner from "@/app/_components/Spinner";
 
-export const metadata = {
+export const revalidate = 3600 ;// Cập nhập dữ liệu mỗi giờ
+//     export const revalidate = 60; // Cập nhập dữ liệu mỗi phút
+    export const metadata = {
     title: "Cabins",
 };
-export default function Page() {
 
+export default function Page() {
     return (
         <div>
             <h1 className="text-4xl mb-5 text-accent-400 font-medium">
