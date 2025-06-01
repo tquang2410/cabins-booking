@@ -1,14 +1,17 @@
 import CabinList from "@/app/_components/CabinList";
 import { Suspense } from "react";
 import Spinner from "@/app/_components/Spinner";
+import Filter from "@/app/_components/Filter";
 
-export const revalidate = 3600 ;// Cập nhập dữ liệu mỗi giờ
-//     export const revalidate = 60; // Cập nhập dữ liệu mỗi phút
+// export const revalidate = 3600 ;// Cập nhập dữ liệu mỗi giờ
+//     export const revalidate = 10; // Không dùng nữa vì đã thành trang render động
     export const metadata = {
     title: "Cabins",
 };
 
-export default function Page() {
+export default async function Page({searchParams}) {
+    const resolvedSearchParams = await searchParams;
+     const filter = resolvedSearchParams?.capacity ?? "all";
     return (
         <div>
             <h1 className="text-4xl mb-5 text-accent-400 font-medium">
@@ -22,8 +25,12 @@ export default function Page() {
                 away from home. The perfect spot for a peaceful, calm vacation. Welcome
                 to paradise.
             </p>
+            <div className="flex flex-col gap-5 mb-10">
+                <Filter/>
+            </div>
+
      <Suspense fallback={<Spinner/>}>
-         <CabinList/>
+         <CabinList filter={filter}/>
      </Suspense>
 
         </div>

@@ -4,6 +4,7 @@ import { notFound } from 'next/navigation';
 /////////////
 // GET
 
+//
 export async function getCabin(id) {
   const { data, error } = await supabase
       .from('cabins')

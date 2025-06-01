@@ -1,4 +1,6 @@
+'use client';
 import { useState } from 'react';
+import Logo from "@/app/_components/Logo";
 
 function TextExpander({ children }) {
   const [isExpanded, setIsExpanded] = useState(false);
