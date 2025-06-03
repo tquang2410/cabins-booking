@@ -43,7 +43,7 @@ export const getCabins = async function () {
       .select('id, name, maxCapacity, regularPrice, discount, image')
       .order('name');
   // For testing
-  await new Promise((res) => setTimeout(res, 500));
+  // await new Promise((res) => setTimeout(res, 500));
   if (error) {
     console.error(error);
     throw new Error('Cabins could not be loaded');
@@ -110,7 +110,6 @@ export async function getBookedDatesByCabinId(cabinId) {
       .or(`startDate.gte.${today},status.eq.checked-in`);
 
   if (error) {
-    console.error(error);
     throw new Error('Bookings could not get loaded');
   }
 

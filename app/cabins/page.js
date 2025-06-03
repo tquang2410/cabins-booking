@@ -2,6 +2,7 @@ import CabinList from "@/app/_components/CabinList";
 import { Suspense } from "react";
 import Spinner from "@/app/_components/Spinner";
 import Filter from "@/app/_components/Filter";
+import ReservationReminder from "@/app/_components/ReservationReminder";
 
 // export const revalidate = 3600 ;// Cập nhập dữ liệu mỗi giờ
 //     export const revalidate = 10; // Không dùng nữa vì đã thành trang render động
@@ -29,8 +30,9 @@ export default async function Page({searchParams}) {
                 <Filter/>
             </div>
 
-     <Suspense fallback={<Spinner/>}>
+     <Suspense fallback={<Spinner/>} key={filter}>
          <CabinList filter={filter}/>
+         <ReservationReminder/>
      </Suspense>
 
         </div>

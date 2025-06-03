@@ -7,6 +7,7 @@ const josefin = Josefin_Sans({
     display: "swap",
 });
 import '@/app/_styles/globals.css'
+import {ReservationProvider} from "@/app/_components/ReservationContext";
 export const metadata = {
   title: {
     default: "The Wild Oasis",
@@ -20,7 +21,10 @@ export default function RootLayout({children }) {
        <Header/>
        <div className="flex-1 py-12 px-8 grid">
         <main className="w-full max-w-7xl mx-auto">
-            {children}
+            <ReservationProvider>
+                {children}
+            </ReservationProvider>
+
         </main>
        </div>
         </body>

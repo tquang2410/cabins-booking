@@ -1,5 +1,5 @@
-import { getCountries } from "@/app/_libs/data-service";
 
+import { getCountries } from "@/app/_libs/data-service";
 
 async function SelectCountry({ defaultCountry, name, id, className }) {
   const countries = await getCountries();
