@@ -12,6 +12,7 @@ import ReservationReminder from "@/app/_components/ReservationReminder";
 
 export default async function Page({searchParams}) {
     const resolvedSearchParams = await searchParams;
+    // Dùng searchParams để lấy giá trị của filter từ URL, nếu không có thì mặc định là "all"
      const filter = resolvedSearchParams?.capacity ?? "all";
     return (
         <div>
