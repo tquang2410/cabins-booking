@@ -1,6 +1,8 @@
 import DateSelector from "@/app/_components/DateSelector";
 import ReservationForm from "@/app/_components/ReservationForm";
 import {getBookedDatesByCabinId, getCabin, getSettings} from "@/app/_libs/data-service";
+import LoginMessage from "@/app/_components/LoginMessage";
+import {auth} from "@/app/_libs/auth";
 
  async function Reservation ({cabin}) {
     {
@@ -8,6 +10,7 @@ import {getBookedDatesByCabinId, getCabin, getSettings} from "@/app/_libs/data-s
         const [settings, bookedDates] = await Promise.all([
             getSettings(),
             getBookedDatesByCabinId(cabin.id)]);
+        const session = await auth()
         return (
             <div className="border border-primary-800 min-h-[400px] flex">
                 <DateSelector
@@ -15,7 +18,9 @@ import {getBookedDatesByCabinId, getCabin, getSettings} from "@/app/_libs/data-s
                     bookedDates={bookedDates}
                     cabin={cabin}
                 />
-                <ReservationForm cabin ={cabin}/>
+                {session?.user? <ReservationForm cabin ={cabin}
+                                                user = {session.user}
+                /> : <LoginMessage/>}
             </div>
         )
     }
