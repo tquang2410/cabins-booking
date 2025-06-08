@@ -5,6 +5,7 @@ import "react-day-picker/dist/style.css";
 import {useReservation} from "@/app/_components/ReservationContext";
 function isAlreadyBooked(range, datesArr) {
   return (
+    range &&
     range.from &&
     range.to &&
     datesArr.some((date) =>
@@ -15,11 +16,15 @@ function isAlreadyBooked(range, datesArr) {
 
 function DateSelector({settings, bookedDates, cabin}) {
 const {range, setRange, resetRange} = useReservation();
+  
+  // Đảm bảo range luôn có giá trị mặc định
+  const safeRange = range || { from: undefined, to: undefined };
+  
   // CHANGE
-  const displayRange = isAlreadyBooked (range, bookedDates) ? {} : range;
+  const displayRange = isAlreadyBooked (safeRange, bookedDates) ? {} : safeRange;
 
   const { regularPrice, discount} = cabin;
-  const numNights = differenceInDays(range.to, range.from);
+  const numNights = safeRange?.from && safeRange?.to ? differenceInDays(safeRange.to, safeRange.from) : 0;
   const cabinPrice = numNights * (regularPrice - discount)
 
   // SETTINGS
@@ -71,7 +76,7 @@ const {range, setRange, resetRange} = useReservation();
           ) : null}
         </div>
 
-        {range.from || range.to ? (
+        {safeRange?.from || safeRange?.to ? (
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
             onClick={ resetRange}

@@ -5,7 +5,13 @@ const initialState = { from: undefined, to: undefined };
 function ReservationProvider({children}) {
     const [range, setRange] = useState(initialState);
     const resetRange = () => setRange(initialState);
-    return (<ReservationContext.Provider value={{ range, setRange, resetRange }}>
+    
+    // Đảm bảo range luôn là object, không bao giờ undefined
+    const safeSetRange = (newRange) => {
+        setRange(newRange || initialState);
+    };
+    
+    return (<ReservationContext.Provider value={{ range, setRange: safeSetRange, resetRange }}>
         {children}
     </ReservationContext.Provider>
     );
