@@ -27,22 +27,57 @@ export async function updateGuest(formData) {
 
     revalidatePath("/account/profile");
 }
+
 export async function signInAction() {
     await signIn("google", {redirectTo: "/account"});
 }
+
 export async function signOutAction() {
     await signOut({redirectTo: "/"});
 }
-export async function deleteReservation(bookingId) {
+
+export async function createBooking(bookingData, formData) {
+    // console.log(formData)
     const session = await auth();
     if (!session) throw new Error("You must be logged in");
+    Object.entries(formData.entries())
+    const newBooking = {
+        startDate: bookingData.startDate,
+        endDate: bookingData.endDate,
+        numNights: bookingData.numNights,
+        cabinId: bookingData.cabinId,
+        cabinPrice: bookingData.cabinPrice,
+        guestId: session.user.guestId,
+        numGuests: Number(formData.get('numGuests')),
+        observations: formData.get("observations").slice(0, 1000),
+        extrasPrice: 0,
+        totalPrice: bookingData.cabinPrice,
+        isPaid: false,
+        status: "unconfirmed",
+    };
+    console.log(newBooking);
+    const {data, error} = await supabase.from("bookings").insert([newBooking]);
+
+    if (error) {
+        console.error(error);
+        throw new Error("Booking could not be created");
+    }
+
+    revalidatePath("/cabins");
+    redirect("/account/reservations");
+}
+
+export async function deleteBooking(bookingId) {
+    const session = await auth();
+    if (!session) throw new Error("You must be logged in");
+
     const guestBookings = await getBookings(session.user.guestId);
     const guestBookingIds = guestBookings.map((booking) => booking.id);
 
-    if(!guestBookingIds.includes(bookingId))
+    if (!guestBookingIds.includes(bookingId))
         throw new Error("Not allowed to delete this booking");
 
-    const {  error } = await supabase
+    const {error} = await supabase
         .from("bookings")
         .delete()
         .eq("id", bookingId);
@@ -53,7 +88,8 @@ export async function deleteReservation(bookingId) {
     }
     revalidatePath("/account/reservations")
 }
-export async function updateBooking(formData){
+
+export async function updateBooking(formData) {
     const bookingId = Number(formData.get("bookingId"));
     // 1. Authentication
     const session = await auth();
@@ -62,15 +98,16 @@ export async function updateBooking(formData){
     const guestBookings = await getBookings(session.user.guestId);
     const guestBookingIds = guestBookings.map((booking) => booking.id);
 
-    if(!guestBookingIds.includes(bookingId))
+    if (!guestBookingIds.includes(bookingId))
         throw new Error("Not allowed to delete this booking");
-     // 3. Building update data
-    const updateData = { numGuests: formData.get('numGuests'),
+    // 3. Building update data
+    const updateData = {
+        numGuests: formData.get('numGuests'),
         observations: formData.get("observations").slice(0, 1000),
     };
 
     // 4. Mutation
-    const { error } = await supabase
+    const {error} = await supabase
         .from("bookings")
         .update(updateData)
         .eq("id", bookingId)
@@ -83,7 +120,6 @@ export async function updateBooking(formData){
     // 6) Revalidate - đoạn này không dùng vì nextjs 15+ không bị lỗi refetch data
     // revalidatePath(`/account/reservations/edit/${bookingId}`)
     // revalidatePath("/account/reservations")
-
 
     // 7) Redirecting
     redirect('/account/reservations')

@@ -18,7 +18,8 @@ import Cabin from "@/app/_components/Cabin";
 //     };
 // }
 export async function generateMetadata({params}){
-    const {name} = await getCabin(params.cabinId);
+    const resolvedParams = await params;
+    const {name} = await getCabin(resolvedParams.cabinId);
     return { title: `Cabin ${name}`}
 }
 export async function generateStaticParams(){
@@ -30,7 +31,8 @@ export async function generateStaticParams(){
 }
 export default async function Page({params}) {
     // params.cabinId = "123" nếu URL là /cabins/123
-    const cabin = await getCabin(params.cabinId);
+    const resolvedParams = await params;
+    const cabin = await getCabin(resolvedParams.cabinId);
 
 
     return (
