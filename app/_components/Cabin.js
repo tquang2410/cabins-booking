@@ -1,11 +1,13 @@
 import Image from "next/image";
 import TextExpander from "@/app/_components/TextExpander";
-import {EyeSlashIcon, MapPinIcon, UsersIcon} from "@heroicons/react/24/solid";
+import {EyeSlashIcon, MapPinIcon, UsersIcon, ClockIcon} from "@heroicons/react/24/solid";
 
 
-function Cabin ({cabin}) {
+function Cabin ({cabin, settings}) {
   const { id, name, maxCapacity, regularPrice, discount, image, description } =
       cabin;
+  const { minBookingLength } = settings;
+  
   return (
     <div>
       <div className="grid grid-cols-[3fr_4fr] gap-20 border border-primary-800 py-3 px-10 mb-24">
@@ -42,6 +44,12 @@ function Cabin ({cabin}) {
             <li className="flex gap-3 items-center">
               <EyeSlashIcon className="h-5 w-5 text-primary-600" />
               <span className="text-lg">Privacy <span className="font-bold">100%</span> guaranteed
+              </span>
+            </li>
+            <li className="flex gap-3 items-center">
+              <ClockIcon className="h-5 w-5 text-primary-600" />
+              <span className="text-lg">
+                Minimum <span className="font-bold">{minBookingLength + 1}</span> nights booking required
               </span>
             </li>
           </ul>

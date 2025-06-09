@@ -32,12 +32,15 @@ export async function generateStaticParams(){
 export default async function Page({params}) {
     // params.cabinId = "123" nếu URL là /cabins/123
     const resolvedParams = await params;
-    const cabin = await getCabin(resolvedParams.cabinId);
+    const [cabin, settings] = await Promise.all([
+        getCabin(resolvedParams.cabinId),
+        getSettings()
+    ]);
 
 
     return (
         <div className="max-w-6xl mx-auto mt-8">
-            <Cabin cabin={cabin}/>
+            <Cabin cabin={cabin} settings={settings}/>
 
             <div>
                 <h2 className="text-5xl font-semibold text-center mb-10 text-accent-400">
