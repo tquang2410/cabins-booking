@@ -79,7 +79,7 @@ const {range, setRange, resetRange} = useReservation();
         {safeRange?.from || safeRange?.to ? (
           <button
             className="border border-primary-800 py-2 px-4 text-sm font-semibold"
-            onClick={ resetRange}
+            onClick={ resetRange }
           >
             Clear
           </button>
